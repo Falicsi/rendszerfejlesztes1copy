@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+   <title>Spring Boot example</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <link rel='stylesheet' href='style.css'>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+         crossorigin="anonymous">
+   <!-- További JavaScript és CSS hivatkozások -->
+</head>
+<header>
+   <!-- Navigációs sáv -->
+</header>
+<body>
+<div style = "margin-left: 20%">
+   <h2>Meglévő szállások</h2>
+   <table style = "width : 80%">
+      <thead>
+      <tr>
+         <th>ID</th>
+         <th>Név</th>
+         <th>Cím</th>
+         <th>Férőhelyek száma</th>
+         <th>Foglalt</th>
+         <th>Műveletek</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="szallas, iter : ${Szallasok}">
+         <td th:text="${szallas.id}"></td>
+         <td th:text="${szallas.nev}"></td>
+         <td th:text="${szallas.cim}"></td>
+         <td th:text="${szallas.feroHelyekSzama}"></td>
+         <td th:text="${szallas.foglalt ? 'Igen' : 'Nem'}"></td>
+         <td>
+            <form th:action="@{/delete/{id}(id=${szallas.id})}" method="post">
+               <button type="submit">Töröl</button>
+            </form>
+            <!-- Új foglalás űrlap -->
+            <form th:action="@{/foglal/{id}(id=${szallas.id})}" method="post">
+               <input type="hidden" name="foglalt" value="true" />
+               <button type="submit">Foglal</button>
+            </form>
+               <form th:action="@{/foglalas-torles/{id}(id=${szallas.id})}" method="post">
+                  <button type="submit">Foglalás Törlése</button>
+               </form>
+         </td>
+      </tr>
+      </tbody>
+   </table>
+</div>
+<div>
+   <hr>
+   <h2>Új szállás hozzáadása</h2>
+   <form th:action="@{/add}" method="post">
+      <label>Név:
+         <input type="text" name="nev"></input>
+      </label>
+      <br>
+      <label>Cím:
+         <input type="text" name="cim"></input>
+      </label>
+      <br>
+      <label>Férőhelyek száma:
+         <input type="number" name="feroHelyekSzama"></input>
+      </label>
+      <br>
+      <label>Foglalt:
+         <select name="foglalt">
+            <option value="false">Nem</option>
+            <option value="true">Igen</option>
+         </select>
+      </label>
+      <br>
+      <input style="background-color: green" type="submit" value="Hozzáad" class="btn-sm btn-dark details"></input>
+   </form>
+</div>
+<!-- További tartalmak -->
+</body>
+</html>
